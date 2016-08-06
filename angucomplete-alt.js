@@ -670,10 +670,9 @@
             }
           }
           if (scope.preventInvokeApply) {
+            scope.$digest();
             
           }
-          scope.$digest();
-          
         }
 
         function showAll() {
