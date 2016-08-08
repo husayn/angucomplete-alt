@@ -363,6 +363,27 @@
           }
         }
 
+        function keyboardDownArrowHandler() {
+          scope.currentIndex++;
+          if (inputExists) {
+            updateInputField();
+          }
+        }
+
+        function keyboardUpArrowHandler() {
+          scope.currentIndex--;
+          if (inputExists) {
+            updateInputField();
+          }
+        }
+
+        function keyboardUpArrowHandlerAtTop() {
+          scope.currentIndex = -1;
+          if (inputExists) {
+            inputField.val(scope.searchStr);
+          }
+        }
+
         function keydownHandler(event) {
           var which = ie8EventNormalizer(event);
           var row = null;
@@ -383,16 +404,10 @@
             event.preventDefault();
             if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
               if (scope.preventInvokeApply) {
-                 scope.currentIndex ++;
-                if(inputExists) {
-                  updateInputField();
-                }
+                 keyboardDownArrowHandler();
               } else {
                 scope.$apply(function () {
-                  scope.currentIndex++;
-                  if (inputExists) {
-                    updateInputField();
-                  }
+                  keyboardDownArrowHandler();
                 });
               }
 
@@ -407,17 +422,11 @@
             event.preventDefault();
             if (scope.currentIndex >= 1) {
               if (scope.preventInvokeApply) {
-                scope.$apply(function () {
-                  scope.currentIndex--;
-                  if (inputExists) {
-                    updateInputField();
-                  }
-                });
+                keyboardUpArrowHandler();
               } else {
-                scope.currentIndex--;
-                if (inputExists) {
-                  updateInputField();
-                }
+                scope.$apply(function () {
+                  keyboardUpArrowHandler();
+                });
               }
 
               if (isScrollOn && !scope.preventCssComputation) {
@@ -429,16 +438,10 @@
             }
             else if (scope.currentIndex === 0) {
               if (scope.preventInvokeApply) {
-                scope.currentIndex = -1;
-                if(inputExists) {
-                  inputField.val(scope.searchStr);
-                }
+                keyboardUpArrowHandlerAtTop();
               } else {
                 scope.$apply(function () {
-                  scope.currentIndex = -1;
-                  if (inputExists) {
-                    inputField.val(scope.searchStr);
-                  }
+                  keyboardUpArrowHandlerAtTop();
                 });
               }
             }
